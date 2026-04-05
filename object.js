@@ -2,7 +2,6 @@ class Patient {
   static totalPatients = 0;
   static allPatients = [];
 
-  
   constructor(patientId, name, phone) {
     this.patientId = patientId;
     this.name = name;
@@ -13,21 +12,18 @@ class Patient {
     Patient.allPatients.push(this);
   }
 
- 
   register() {
     console.log("Patient " + this.name + " (ID: " + this.patientId + ") has been registered");
     return true;
   }
 
-  
   updateContactInfo(newPhone) {
     var oldPhone = this.phone;
     this.phone = newPhone;
     console.log(this.name + "'s phone updated from " + oldPhone + " to " + newPhone);
-    return true
+    return true;
   }
 
- 
   viewAppointments() {
     if (this.appointments.length === 0) {
       console.log(this.name + " has no scheduled appointments.");
@@ -41,22 +37,15 @@ class Patient {
     return this.appointments;
   }
 
-  
   static findPatientById(patientId) {
-    var patient = null;
     for (var i = 0; i < Patient.allPatients.length; i++) {
       if (Patient.allPatients[i].patientId === patientId) {
-        patient = Patient.allPatients[i];
-        break;
+        console.log("Found patient: " + Patient.allPatients[i].name);
+        return Patient.allPatients[i];
       }
     }
-    if (patient) {
-      console.log("Found patient: " + patient.name);
-      return patient;
-    } else {
-      console.log("No patient found with ID: " + patientId);
-      return null;
-    }
+    console.log("No patient found with ID: " + patientId);
+    return null;
   }
 
   static getTotalPatients() {
@@ -97,7 +86,7 @@ class Appointment {
     console.log("Appointment " + this.appointmentId + " for " + this.patient.name + " has been cancelled.");
     return true;
   }
-  
+
   reschedule(newDateTime) {
     if (this.status === "cancelled") {
       console.log("Cannot reschedule a cancelled appointment.");
@@ -150,6 +139,7 @@ console.log("=".repeat(60));
 console.log("PATIENT APPOINTMENT SYSTEM - DEMONSTRATION");
 console.log("=".repeat(60));
 
+// 1. Register patients
 console.log("\n1. REGISTERING PATIENTS:");
 var patient1 = new Patient("P001", "Alice Johnson", "555-0101");
 patient1.register();
@@ -157,11 +147,7 @@ patient1.register();
 var patient2 = new Patient("P002", "Bob Smith", "555-0102");
 patient2.register();
 
-var patient3 = new Patient("P003", "Carol Davis", "555-0103");
-patient3.register();
-
-Patient.getTotalPatients();
-
+// 2. Schedule appointments
 console.log("\n2. SCHEDULING APPOINTMENTS:");
 var appt1 = new Appointment(patient1, "2025-06-15T10:00:00", "Annual Physical");
 appt1.schedule();
@@ -172,28 +158,11 @@ appt2.schedule();
 var appt3 = new Appointment(patient2, "2025-06-16T11:15:00", "Vaccination");
 appt3.schedule();
 
-console.log("\n3. VIEWING APPOINTMENTS:");
-patient1.viewAppointments();
-
-console.log("\n4. CANCELLING APPOINTMENT:");
+// 3. Cancel an appointment
+console.log("\n3. CANCELLING APPOINTMENT:");
 appt2.cancel();
 
-console.log("\n5. RESCHEDULING APPOINTMENT:");
-appt3.reschedule("2025-06-17T09:30:00");
-
-console.log("\n6. UPDATING PATIENT INFO:");
-patient1.updateContactInfo("555-0199");
-
-console.log("\n7. FINDING PATIENT BY ID:");
-Patient.findPatientById("P002");
-Patient.findPatientById("P999");
-
-Appointment.getAppointmentStats();
-
-console.log("\n8. COMPLETING APPOINTMENT:");
-appt1.status = "completed";
-console.log("Appointment " + appt1.appointmentId + " marked as completed.");
-
+// 4. Get appointment statistics
 Appointment.getAppointmentStats();
 
 console.log("\n" + "=".repeat(60));
